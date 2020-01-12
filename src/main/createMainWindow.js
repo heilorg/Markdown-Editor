@@ -1,6 +1,17 @@
-import {BrowserWindow} from "electron";
+import {BrowserWindow, ipcMain} from "electron";
 
 class mainWindow{
+    requestText(){
+        return new Promise((res) => {
+            this.window.webContents.send("REQUEST_TEXT");
+            ipcMain.once("REPLY_TEXT", (_e, text) => res(text));
+        });
+    }
+
+    sendText(text){
+        this.window.webContents.send("SEND_TEXT", text);
+    }
+
     constructor() {
         const option = {
             width: 800,
